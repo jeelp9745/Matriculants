@@ -5,7 +5,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     const password = document.getElementById('password').value;
 
     if (username === "user123" && password === "password123") {
-        window.location.href = "jeel.html"; 
+        window.location.href = "home.html"; 
     } else {
         alert("Incorrect username or password! Please try again.");
     }
