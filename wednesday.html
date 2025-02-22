@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Table</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 10px;
+        }
+
+        .save-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Time Table</h2>
+
+        <div class="table-container">
+            <table id="timetable">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Task</th>
+                        <th>Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                </tbody>
+            </table>
+        </div>
+
+        <button class="save-btn" onclick="saveData()">Save</button>
+    </div>
+
+    <script>
+        
+        function createSchedule() {
+            const tableBody = document.getElementById('timetable').getElementsByTagName('tbody')[0];
+
+           
+            for (let i = 1; i <= 14; i++) {
+                const row = document.createElement('tr');
+
+                const timeCell = document.createElement('td');
+                const timeInput = document.createElement('input');
+                timeInput.type = 'text';
+                timeInput.placeholder = `Time ${i}`;
+                timeCell.appendChild(timeInput);
+                row.appendChild(timeCell);
+
+                const taskCell = document.createElement('td');
+                const taskInput = document.createElement('input');
+                taskInput.type = 'text';
+                taskInput.placeholder = `Task ${i}`;
+                taskCell.appendChild(taskInput);
+                row.appendChild(taskCell);
+
+                const checkboxCell = document.createElement('td');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkboxCell.appendChild(checkbox);
+                row.appendChild(checkboxCell);
+
+                tableBody.appendChild(row);
+            }
+        }
+
+               function saveData() {
+            const rows = document.querySelectorAll('#timetable tbody tr');
+            let scheduleData = [];
+
+            rows.forEach(row => {
+                const time = row.cells[0].querySelector('input').value;
+                const task = row.cells[1].querySelector('input').value;
+                const completed = row.cells[2].querySelector('input').checked;
+
+                if (time && task) {
+                    scheduleData.push({ time, task, completed });
+                }
+            });
+
+                    localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+            alert('Schedule Saved!');
+        }
+
+              function loadData() {
+            const storedData = localStorage.getItem('scheduleData');
+            if (storedData) {
+                const scheduleData = JSON.parse(storedData);
+                const rows = document.querySelectorAll('#timetable tbody tr');
+
+                scheduleData.forEach((entry, index) => {
+                    if (rows[index]) {
+                        rows[index].cells[0].querySelector('input').value = entry.time;
+                        rows[index].cells[1].querySelector('input').value = entry.task;
+                        rows[index].cells[2].querySelector('input').checked = entry.completed;
+                    }
+                });
+            }
+        }
+
+           createSchedule();
+        loadData();
+    </script>
+</body>
+</html>

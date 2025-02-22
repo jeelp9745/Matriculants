@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to right, #9c5300, #2575fc);
+            color: #fff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+            background: #fff;
+            color: #333;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+            width: 75%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #2575fc;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #6a11cb;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        li:hover {
+            background: #e6f7ff;
+            transform: scale(1.02);
+        }
+        a {
+            color: #2575fc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .delete-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .delete-btn:hover {
+            background: #cc0000;
+        }
+    </style>
+    <script>
+        function addLink() {
+            const urlInput = document.getElementById('urlInput');
+            const linkList = document.getElementById('linkList');
+
+            if (urlInput.value.trim() !== '') {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = urlInput.value;
+                a.textContent = urlInput.value;
+                a.target = '_blank';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = () => li.remove();
+                
+                li.appendChild(a);
+                li.appendChild(deleteBtn);
+                linkList.appendChild(li);
+
+                urlInput.value = '';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Link Manager</h1>
+        <input type="text" id="urlInput" placeholder="Enter URL here">
+        <button onclick="addLink()">Add Link</button>
+        <ul id="linkList"></ul>
+    </div>
+</body>
+</html>

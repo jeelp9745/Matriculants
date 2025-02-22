@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Page</title>
+    <link rel="stylesheet" href="contect.css">
+</head>
+<body>
+    <div class="contact-container">
+        <h2>Contact Information</h2>
+
+        <form id="contact-form">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact Number</th>
+                    <th>Email</th>
+                    <th>Student ID</th>
+                </tr>
+                <tbody id="form-rows">
+                </tbody>
+            </table>
+            <button type="submit">Save Contact Information</button>
+        </form>
+
+        <div id="saved-data" class="saved-data">
+            <h3>Saved Contact Information</h3>
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Contact Number</th>
+                        <th>Email</th>
+                        <th>Student ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Saved data will be displayed here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="contect.js"></script>
+</body>
+</html>

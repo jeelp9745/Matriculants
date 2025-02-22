@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: rgb(245, 240, 238);
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 90%;
+        }
+        .save-button {
+            margin: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Weekly Timetable</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>TIME</th>
+                <th>Task</th>
+                <th>Done</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+    </table>
+    <button class="save-button" onclick="saveData()">SAVE</button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let tableBody = document.getElementById("table-body");
+            for (let i = 0; i < 19; i++) {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td><input type="text" class="time"></td>
+                    <td><input type="text" class="task"></td>
+                    <td><input type="checkbox" class="task-done"></td>
+                `;
+                tableBody.appendChild(row);
+            }
+        });function saveData() {
+        let times = document.querySelectorAll(".time");
+        let tasks = document.querySelectorAll(".task");
+        let statuses = document.querySelectorAll(".task-done");
+        let data = [];
+        
+        for (let i = 0; i < times.length; i++) {
+            data.push({
+                time: times[i].value,
+                task: tasks[i].value,
+                done: statuses[i].checked
+            });
+        }
+        localStorage.setItem("timetable", JSON.stringify(data));
+        alert("Timetable saved!");
+    }
+</script>
+
+</body>
+</html>
