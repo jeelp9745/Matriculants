@@ -1,76 +1,181 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Table</title>
     <style>
         body {
+            display: flex;
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: rgb(245, 240, 238);
+            margin: 0;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
         }
+
+        .container {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
         table {
             width: 80%;
-            margin: 20px auto;
             border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         th, td {
-            border: 1px solid black;
-            padding: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
             text-align: center;
         }
-        input[type="text"] {
-            width: 90%;
+
+        th {
+            background-color: #4CAF50;
+            color: white;
         }
-        .save-button {
-            margin: 20px;
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 10px;
+        }
+
+        .save-btn {
+            margin-top: 20px;
             padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h2>Weekly Timetable</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>TIME</th>
-                <th>Task</th>
-                <th>Done</th>
-            </tr>
-        </thead>
-        <tbody id="table-body">
-        </tbody>
-    </table>
-    <button class="save-button" onclick="saveData()">SAVE</button>
+    <div class="container">
+        <h2>Time Table</h2>
+
+        <div class="table-container">
+            <table id="timetable">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Task</th>
+                        <th>Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                </tbody>
+            </table>
+        </div>
+
+        <button class="save-btn" onclick="saveData()">Save</button>
+    </div>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let tableBody = document.getElementById("table-body");
-            for (let i = 0; i < 19; i++) {
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td><input type="text" class="time"></td>
-                    <td><input type="text" class="task"></td>
-                    <td><input type="checkbox" class="task-done"></td>
-                `;
+        
+        function createSchedule() {
+            const tableBody = document.getElementById('timetable').getElementsByTagName('tbody')[0];
+
+           
+            for (let i = 1; i <= 14; i++) {
+                const row = document.createElement('tr');
+
+                const timeCell = document.createElement('td');
+                const timeInput = document.createElement('input');
+                timeInput.type = 'text';
+                timeInput.placeholder = `Time ${i}`;
+                timeCell.appendChild(timeInput);
+                row.appendChild(timeCell);
+
+                const taskCell = document.createElement('td');
+                const taskInput = document.createElement('input');
+                taskInput.type = 'text';
+                taskInput.placeholder = `Task ${i}`;
+                taskCell.appendChild(taskInput);
+                row.appendChild(taskCell);
+
+                const checkboxCell = document.createElement('td');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkboxCell.appendChild(checkbox);
+                row.appendChild(checkboxCell);
+
                 tableBody.appendChild(row);
             }
-        });function saveData() {
-        let times = document.querySelectorAll(".time");
-        let tasks = document.querySelectorAll(".task");
-        let statuses = document.querySelectorAll(".task-done");
-        let data = [];
-        
-        for (let i = 0; i < times.length; i++) {
-            data.push({
-                time: times[i].value,
-                task: tasks[i].value,
-                done: statuses[i].checked
-            });
         }
-        localStorage.setItem("timetable", JSON.stringify(data));
-        alert("Timetable saved!");
-    }
-</script>
 
+               function saveData() {
+            const rows = document.querySelectorAll('#timetable tbody tr');
+            let scheduleData = [];
+
+            rows.forEach(row => {
+                const time = row.cells[0].querySelector('input').value;
+                const task = row.cells[1].querySelector('input').value;
+                const completed = row.cells[2].querySelector('input').checked;
+
+                if (time && task) {
+                    scheduleData.push({ time, task, completed });
+                }
+            });
+
+                    localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+            alert('Schedule Saved!');
+        }
+
+              function loadData() {
+            const storedData = localStorage.getItem('scheduleData');
+            if (storedData) {
+                const scheduleData = JSON.parse(storedData);
+                const rows = document.querySelectorAll('#timetable tbody tr');
+
+                scheduleData.forEach((entry, index) => {
+                    if (rows[index]) {
+                        rows[index].cells[0].querySelector('input').value = entry.time;
+                        rows[index].cells[1].querySelector('input').value = entry.task;
+                        rows[index].cells[2].querySelector('input').checked = entry.completed;
+                    }
+                });
+            }
+        }
+
+           createSchedule();
+        loadData();
+    </script>
 </body>
 </html>
